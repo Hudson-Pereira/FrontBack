@@ -1,7 +1,7 @@
 export const Api = {
-  baseUrl: "http://localhost:3001",
+  baseUrl: "http://localhost:3000", //apontar para a porta do back
 
-  createUrl: () => Api.baseUrl + "/personagens/create",
+  createUrl: () => Api.baseUrl + "/personagens/create/",
 
   readAllUrl: () => Api.baseUrl + "/personagens/readAll",
   readSingleUrl: (id) => Api.baseUrl + "/personagens/readSingle/" + id,
