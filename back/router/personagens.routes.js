@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const Personagem = require("./../models/personagens"); //importanto modelo do mongoose
 const PersonagemController = require("./../controller/personagens.controller"); //importando arquivo da controller
 
 router.get("/", (req, res) => {
@@ -16,6 +15,6 @@ router.post("/create", PersonagemController.postCreate);
 
 router.put("/update/:id", PersonagemController.putUpdate);
 
-router.delete("/delete/:id", PersonagemController.getDelete);
+router.delete("/delete/:id", PersonagemController.delDelete);
 
 module.exports = router;
