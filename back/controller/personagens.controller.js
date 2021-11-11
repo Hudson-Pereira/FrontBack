@@ -1,15 +1,5 @@
 const Personagem = require("./../models/personagens");
 
-function validaEntrada(requisicao) {
-  if (!req.body.nome) {
-    res.status(400).json({ message: "Nome não inserido." });
-    return;
-  } else if (!req.body.imagemUrl) {
-    res.status(400).json({ message: "Imagem não inserida." });
-    return;
-  }
-}
-
 exports.getAll = async (req, res) => {
   await Personagem.find({})
     .then((personagens) => {
@@ -36,8 +26,13 @@ exports.getSingle = async (req, res) => {
 };
 
 exports.postCreate = async (req, res) => {
-  validaEntrada(req.body.nome);
-  validaEntrada(req.body.imagemUrl);
+  if (!req.body.nome) {
+    res.status(400).send({ message: "Nome não inserido." });
+    return;
+  } else if (!req.body.imagemUrl) {
+    res.status(400).send({ message: "Imagem não inserida." });
+    return;
+  }
 
   await Personagem.create(req.body)
     .then(() => {
