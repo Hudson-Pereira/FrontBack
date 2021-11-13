@@ -28,7 +28,9 @@ exports.getAll = async (req, res) => {
 };
 
 exports.getSingle = async (req, res) => {
-  validaId(res, req.params.id);
+  if (validaId(res, req.params.id)) {
+	return;
+}
   await Personagem.findById(req.params.id)
     .then((personagem) => {
       res.status(200).json(personagem);
@@ -40,7 +42,9 @@ exports.getSingle = async (req, res) => {
 };
 
 exports.postCreate = async (req, res) => {
-  validaEntrada(res, req.body);
+  if (validaEntrada(res, req.body)) {
+return;
+}
   await Personagem.create(req.body)
     .then(() => {
       res.status(201).json({ message: "Personagem inserido corretamente." });
