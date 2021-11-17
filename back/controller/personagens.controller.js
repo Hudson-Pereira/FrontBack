@@ -1,18 +1,44 @@
+const { listeners } = require("./../models/personagens");
 const Personagem = require("./../models/personagens");
 
-function validaEntrada(res, requisicao) {
-  if (!requisicao.nome) {
-    res.status(400).json({ message: "Nome não inserido." });
-    return;
-  } else if (!requisicao.imagemUrl) {
-    res.status(400).json({ message: "Imagem não inserida." });
-    return;
-  }
-}
+// function validaEntrada(dados) {
+//   const listaErros = [];
+//   var nome = {
+//     vazio: false,
+//     tamanho: true,
+//     num: false,
+//   };
+//   var imagem = {
+//     vazio: false,
+//   };
+
+//   if (!dados.nome) {
+//     nome.vazio = true;
+//   } else if (dados.nome.length > 50) {
+//     nome.tamanho = true;
+//   } else {
+//     nome.tamanho = false;
+//   }
+
+//   if (!isNaN(dados.nome)) {
+//     nome.num = true;
+//   }
+
+//   if (!dados.imagemUrl) {
+//     imagem.vazio = true;
+//   }
+
+//   listaErros.push(nome);
+//   listaErros.push(imagem);
+
+//   console.log(listaErros);
+//   return listaErros;
+// }
 
 function validaId(res, id) {
   if (id.length != 24) {
-    return res.status(400).json({ message: "O id precisa ter 24 caracteres" });
+    res.status(400).json({ message: "O id precisa ter 24 caracteres" });
+    return true;
   }
 }
 
@@ -29,8 +55,8 @@ exports.getAll = async (req, res) => {
 
 exports.getSingle = async (req, res) => {
   if (validaId(res, req.params.id)) {
-	return;
-}
+    return;
+  }
   await Personagem.findById(req.params.id)
     .then((personagem) => {
       res.status(200).json(personagem);
@@ -42,9 +68,14 @@ exports.getSingle = async (req, res) => {
 };
 
 exports.postCreate = async (req, res) => {
-  if (validaEntrada(res, req.body)) {
-return;
-}
+  if (!req.body.nome) {
+    res.status(400).json({ message: "Nome vazio." });
+    return;
+  }
+  if (!req.body.imagemUrl) {
+    res.status(400).json({ message: "Imagem vazia." });
+  }
+
   await Personagem.create(req.body)
     .then(() => {
       res.status(201).json({ message: "Personagem inserido corretamente." });
@@ -57,7 +88,13 @@ return;
 
 exports.putUpdate = async (req, res) => {
   validaId(res, req.params.id);
-  validaEntrada(res, req.body);
+  if (!req.body.nome) {
+    res.status(400).json({ message: "Nome vazio." });
+    return;
+  }
+  if (!req.body.imagemUrl) {
+    res.status(400).json({ message: "Imagem vazia." });
+  }
   await Personagem.findByIdAndUpdate(req.params.id, req.body)
     .then((personagem) => {
       res.status(200).json({ message: "Atualizado." });
