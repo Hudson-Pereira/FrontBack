@@ -71,6 +71,9 @@ exports.postCreate = async (req, res) => {
   if (!req.body.nome) {
     res.status(400).json({ message: "Nome vazio." });
     return;
+  } else if (req.body.nome.length > 50) {
+    res.status(400).json({ message: "Nome com mais de 50 caracteres." });
+    return;
   }
   if (!req.body.imagemUrl) {
     res.status(400).json({ message: "Imagem vazia." });
